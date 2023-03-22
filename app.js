@@ -7,6 +7,7 @@ let dataBase = path.join(__dirname, "cricketTeam.db");
 
 let db = null;
 let app = express();
+app.use(express.json());
 
 let start = async () => {
   try {
@@ -22,12 +23,12 @@ let start = async () => {
 };
 start();
 
-const snake_Case_to_camelCase = (Dbobjects) => {
+const snake_Case_to_camelCase = (DataBase) => {
   return {
-    playerId: Dbobjects.player_id,
-    playerName: Dbobjects.player_name,
-    jerseyNumber: Dbobjects.jersey_number,
-    role: Dbobjects.role,
+    playerId: DataBase.player_id,
+    playerName: DataBase.player_name,
+    jerseyNumber: DataBase.jersey_number,
+    role: DataBase.role,
   };
 };
 
@@ -42,3 +43,35 @@ app.get("/players/", async (request, response) => {
     Player.map((eachPlayer) => snake_Case_to_camelCase(eachPlayer))
   );
 });
+
+app.get("/players/:playerId", async (request, response) => {
+  let { playerId } = request.params;
+
+  let getplayerQuery = `
+       
+  SELECT 
+  *
+  
+  FROM 
+  cricket_team
+
+  WHERE 
+  player_id = ${playerId};`;
+  
+  let player = await db.get(getplayerQuery);
+  response.send(snake_Case_to_camelCase(player));
+});
+
+app.post('/players/', async (request,response)=>
+
+    let {playerName,jerseyNumber,role} = request.body
+
+    let addingplayer = `
+    INSERT INTO
+    cricket_team (player_name,jersey_number,role)
+    VALUES 
+    ('${playerName}',${jerseyNumber},'${role}');`;
+    let addplayer = await db.run(addingplayer)
+    response.send("player Add to team")
+
+);
