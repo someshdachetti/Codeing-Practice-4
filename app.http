@@ -6,10 +6,23 @@ GET http://localhost:3000/players/
 ###
 
 ###
-GET http://localhost:3000/players/11/
+GET http://localhost:3000/player/
 
 
 
 ###
 
-POST http://localhost:3000/players/
+POST http://localhost:3000/player/
+
+
+###
+
+GET http://localhost:3000/player/2/
+
+###
+PUT  http://localhost:3000/player/2/
+
+
+###
+
+DELETE  http://localhost:3000/player/1/
