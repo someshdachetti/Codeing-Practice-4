@@ -52,8 +52,10 @@ app.post("/players/", async (request, response) => {
   try {
     let addingplayer = `
     INSERT INTO
-    cricket_team (player_name,jersey_number,role)
+    cricket_team (player_name,
+    jersey_number,role)
     VALUES 
+
     ('${playerName}',${jerseyNumber},'${role}');`;
 
     let addplayer = await db.run(addingplayer);
@@ -86,11 +88,12 @@ app.put("/players/:playerId", async (request, response) => {
 
   try {
     let updatePlayer = `
-UPDATE cricket_team
+UPDATE 
+cricket_team
 SET
 player_id = '${playerName}',
 jersey_number =${jerseyNumber},
-role = ${role};`;
+role = '${role}';`;
 
     await db.run(updatePlayer);
     response.send("Player Details Updated");
