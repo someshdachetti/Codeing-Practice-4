@@ -5,24 +5,25 @@ GET http://localhost:3000/players/
 
 ###
 
-###
-GET http://localhost:3000/player/
 
 
-
-###
-
-POST http://localhost:3000/player/
 
 
 ###
 
-GET http://localhost:3000/player/2/
-
-###
-PUT  http://localhost:3000/player/2/
+POST http://localhost:3000/players/1/
+Content-Type: application/json
 
 
 ###
 
-DELETE  http://localhost:3000/player/1/
+GET http://localhost:3000/player/1/
+
+###
+PUT  http://localhost:3000/players/9/
+Content-Type: application/json
+
+
+###
+
+DELETE  http://localhost:3000/players/1/

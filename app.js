@@ -35,71 +35,73 @@ const snake_Case_to_camelCase = (DataBase) => {
 app.get("/players/", async (request, response) => {
   try {
     const getPlayer = `
-   select 
+    SELECT
    *
-   from 
+   FROM 
+
    cricket_team;`;
-    let Player = await db.all(getPlayer);
-    response.send(Player.map((eachPlayer) => snake_Case_to_camelCase(Player)));
+    let player = await db.all(getPlayer);
+    response.send(
+      player.map((eachPlayer) => snake_Case_to_camelCase(eachPlayer))
+    );
   } catch (e) {
     console.log(`DataBase Error ${e.message}`);
   }
 });
 
-app.post("/players/", async (request, response) => {
-  let { playerName, jerseyNumber, role } = request.body;
+app.post("/players/:playerId", async (request, response) => {
+  const { playerId } = request.params;
+  const { playerName, jerseyNumber, role } = request.body;
 
-  try {
-    let addingplayer = `
+  let addingplayer = `
     INSERT INTO
     cricket_team (player_name,
     jersey_number,role)
+   
     VALUES 
 
-    ('${playerName}',${jerseyNumber},'${role}');`;
+    (player_name ='${playerName}',
+    jersey_number${jerseyNumber},
+    role = '${role}');
+   
+    WHERE 
+    player_id = ${playerId}`;
 
-    let addplayer = await db.run(addingplayer);
-    response.send("player Add to team");
-  } catch (e) {
-    console.log(`DataBase Error : ${e.message}`);
-  }
+  let addplayer = await db.run(addingplayer);
+  response.send("player Add to team");
 });
 
 app.get("/player/:playerId", async (request, response) => {
   let { playerId } = request.params;
-
-  try {
-    let getPlayer = `
+  let getPlayer = `
     SELECT *
     FROM cricket_team
     where 
     player_id = ${playerId};`;
 
-    let result = await db.get(getPlayer);
-    response.send(snake_Case_to_camelCase(getPlayer));
-  } catch (e) {
-    console.log(`DataBase ${e.message}`);
-  }
+  let result = await db.get(getPlayer);
+  response.send(snake_Case_to_camelCase(result));
 });
 
 app.put("/players/:playerId", async (request, response) => {
-  let { playerId } = request.params;
-  let { playerName, jerseyNumber, role } = request.body;
+  const { playerId } = request.params;
 
-  try {
-    let updatePlayer = `
+  const { player_name, jersey_number, role } = request.body;
+
+  let updatePlayer = `
 UPDATE 
 cricket_team
-SET
-player_id = '${playerName}',
-jersey_number =${jerseyNumber},
-role = '${role}';`;
 
-    await db.run(updatePlayer);
-    response.send("Player Details Updated");
-  } catch (e) {
-    console.log(`data Base ${e.message}`);
-  }
+SET
+player_name= '${playerName}',
+jersey_number = ${jerseyNumber},
+role = ${role};
+
+WHERE 
+player_id = ${playerId};`;
+
+  await db.run(updatePlayer);
+  response.send("Player Details Updated");
 });
 
 app.delete("/players/:playerId", async (request, response) => {
@@ -115,3 +117,5 @@ app.delete("/players/:playerId", async (request, response) => {
   await db.get(deletePLayer);
   response.send("Player Removed");
 });
+
+module.exports = app;
